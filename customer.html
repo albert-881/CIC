@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Customer Information Center</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="dist/styles.css" rel="stylesheet">
+  
   <style>
     @keyframes fadeIn {
       0% { opacity: 0; transform: translateY(20px); }
@@ -16,23 +17,33 @@
     }
 
     .hidden { display: none; }
+
+    input {
+      background-color: transparent;
+      border-bottom: 1px solid #ccc;
+      outline: none;
+      padding: 2px 4px;
+    }
   </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased">
 
   <div class="container mx-auto p-8 bg-white shadow-2xl rounded-xl mt-10 max-w-4xl fade-in">
-    <h1 class="text-4xl font-bold text-center mb-8 text-indigo-600">Customer Information Center</h1>
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-4xl font-bold text-indigo-600">Customer Information Center</h1>
+      <button id="toggleEdit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Edit Mode</button>
+    </div>
 
     <!-- 📇 Company Info -->
     <section class="bg-indigo-50 p-6 rounded-lg shadow-lg mb-8">
       <h2 class="text-3xl font-semibold text-indigo-600 mb-4">📇 Company Info</h2>
       <div class="space-y-3 text-lg text-gray-700">
-        <p><strong>Company Name:</strong> Example Co.</p>
-        <p><strong>Formation:</strong> LLC Partnership</p>
-        <p><strong>EIN:</strong> 12-3456789</p>
-        <p><strong>TIN:</strong> 98-7654321</p>
-        <p><strong>EFIN:</strong> 123456</p>
-        <p><strong>Address:</strong> 123 Business Rd, Business City, TX</p>
+        <p><strong>Company Name:</strong> <span class="view">Example Co.</span><input class="edit hidden" type="text" value="Example Co."></p>
+        <p><strong>Formation:</strong> <span class="view">LLC Partnership</span><input class="edit hidden" type="text" value="LLC Partnership"></p>
+        <p><strong>EIN:</strong> <span class="view">12-3456789</span><input class="edit hidden" type="text" value="12-3456789"></p>
+        <p><strong>TIN:</strong> <span class="view">98-7654321</span><input class="edit hidden" type="text" value="98-7654321"></p>
+        <p><strong>EFIN:</strong> <span class="view">123456</span><input class="edit hidden" type="text" value="123456"></p>
+        <p><strong>Address:</strong> <span class="view">123 Business Rd, Business City, TX</span><input class="edit hidden" type="text" value="123 Business Rd, Business City, TX"></p>
       </div>
     </section>
 
@@ -40,12 +51,12 @@
     <section class="bg-white p-6 rounded-lg shadow-lg mb-8">
       <h2 class="text-3xl font-semibold text-indigo-600 mb-4">👤 Owner Information</h2>
       <div class="space-y-3 text-lg text-gray-700">
-        <p><strong>Full Name:</strong> John Doe</p>
-        <p><strong>SSN:</strong> 123-45-6789</p>
-        <p><strong>ID Number:</strong> TX1234567</p>
-        <p><strong>Address:</strong> 456 Home St, Home City, TX</p>
-        <p><strong>Email:</strong> johndoe@example.com</p>
-        <p><strong>Date of Birth:</strong> 01/15/1980</p>
+        <p><strong>Full Name:</strong> <span class="view">John Doe</span><input class="edit hidden" type="text" value="John Doe"></p>
+        <p><strong>SSN:</strong> <span class="view">123-45-6789</span><input class="edit hidden" type="text" value="123-45-6789"></p>
+        <p><strong>ID Number:</strong> <span class="view">TX1234567</span><input class="edit hidden" type="text" value="TX1234567"></p>
+        <p><strong>Address:</strong> <span class="view">456 Home St, Home City, TX</span><input class="edit hidden" type="text" value="456 Home St, Home City, TX"></p>
+        <p><strong>Email:</strong> <span class="view">johndoe@example.com</span><input class="edit hidden" type="email" value="johndoe@example.com"></p>
+        <p><strong>Date of Birth:</strong> <span class="view">01/15/1980</span><input class="edit hidden" type="text" value="01/15/1980"></p>
       </div>
     </section>
 
@@ -53,18 +64,17 @@
     <section class="bg-white p-6 rounded-lg shadow-lg mb-8">
       <h2 class="text-3xl font-semibold text-indigo-600 mb-4">🏦 Banking Information</h2>
       <div class="space-y-3 text-lg text-gray-700">
-        <p><strong>Bank Name:</strong> ABC Bank</p>
-        <p><strong>Routing Number:</strong> 123456789</p>
-        <p><strong>Account Number:</strong> 987654321</p>
+        <p><strong>Bank Name:</strong> <span class="view">ABC Bank</span><input class="edit hidden" type="text" value="ABC Bank"></p>
+        <p><strong>Routing Number:</strong> <span class="view">123456789</span><input class="edit hidden" type="text" value="123456789"></p>
+        <p><strong>Account Number:</strong> <span class="view">987654321</span><input class="edit hidden" type="text" value="987654321"></p>
 
-        <!-- Toggle Debit Card -->
         <button id="toggleCard" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Show Debit Card Info</button>
-        
+
         <div id="cardInfo" class="mt-4 hidden space-y-3">
-          <p><strong>Name on Card:</strong> John Doe</p>
-          <p><strong>Card Number:</strong> 4111 1111 1111 1111</p>
-          <p><strong>CVV:</strong> 123</p>
-          <p><strong>Expiration Date:</strong> 12/27</p>
+          <p><strong>Name on Card:</strong> <span class="view">John Doe</span><input class="edit hidden" type="text" value="John Doe"></p>
+          <p><strong>Card Number:</strong> <span class="view">4111 1111 1111 1111</span><input class="edit hidden" type="text" value="4111 1111 1111 1111"></p>
+          <p><strong>CVV:</strong> <span class="view">123</span><input class="edit hidden" type="text" value="123"></p>
+          <p><strong>Expiration Date:</strong> <span class="view">12/27</span><input class="edit hidden" type="text" value="12/27"></p>
         </div>
       </div>
     </section>
@@ -73,24 +83,59 @@
     <section class="bg-white p-6 rounded-lg shadow-lg">
       <h2 class="text-3xl font-semibold text-indigo-600 mb-4">💻 Applications / Software</h2>
       <div class="space-y-4 text-lg text-gray-700">
-        <div>
-          <p><strong>Name:</strong> QuickBooks</p>
-          <p><strong>Type:</strong> Payroll</p>
-          <p><strong>Username:</strong> johndoe123</p>
-          <p><strong>Password:</strong> ••••••••</p>
-          <p><strong>Website:</strong> <a href="https://quickbooks.intuit.com" target="_blank" class="text-indigo-500 hover:underline">quickbooks.intuit.com</a></p>
-        </div>
-        <!-- Add more apps here if needed -->
+        <p><strong>Name:</strong> <span class="view">QuickBooks</span><input class="edit hidden" type="text" value="QuickBooks"></p>
+        <p><strong>Type:</strong> <span class="view">Payroll</span><input class="edit hidden" type="text" value="Payroll"></p>
+        <p><strong>Username:</strong> <span class="view">johndoe123</span><input class="edit hidden" type="text" value="johndoe123"></p>
+        <p><strong>Password:</strong> <span class="view">••••••••</span><input class="edit hidden" type="text" value="password123"></p>
+        <p><strong>Website:</strong> 
+          <span class="view"><a href="https://quickbooks.intuit.com" target="_blank" class="text-indigo-500 hover:underline">quickbooks.intuit.com</a></span>
+          <input class="edit hidden" type="text" value="https://quickbooks.intuit.com">
+        </p>
       </div>
     </section>
   </div>
 
   <script>
-    document.getElementById('toggleCard').addEventListener('click', () => {
-      const cardInfo = document.getElementById('cardInfo');
-      const isHidden = cardInfo.classList.contains('hidden');
-      cardInfo.classList.toggle('hidden');
-      document.getElementById('toggleCard').innerText = isHidden ? 'Hide Debit Card Info' : 'Show Debit Card Info';
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleEditBtn = document.getElementById('toggleEdit');
+      let isEditMode = false;
+
+      toggleEditBtn.addEventListener('click', () => {
+        isEditMode = !isEditMode;
+        toggleViewMode(isEditMode);
+        toggleEditBtn.innerText = isEditMode ? 'Save Changes' : 'Edit Mode';
+
+        // Handle saving changes if not in edit mode
+        if (!isEditMode) {
+          saveChanges();
+        }
+      });
+
+      document.getElementById('toggleCard').addEventListener('click', () => {
+        const cardInfo = document.getElementById('cardInfo');
+        const isHidden = cardInfo.classList.contains('hidden');
+        cardInfo.classList.toggle('hidden');
+        document.getElementById('toggleCard').innerText = isHidden ? 'Hide Debit Card Info' : 'Show Debit Card Info';
+      });
+
+      function toggleViewMode(isEditMode) {
+        document.querySelectorAll('.view').forEach(el => el.classList.toggle('hidden', isEditMode));
+        document.querySelectorAll('.edit').forEach(el => el.classList.toggle('hidden', !isEditMode));
+      }
+
+      function saveChanges() {
+        document.querySelectorAll('input.edit').forEach(input => {
+          const span = input.previousElementSibling;
+          if (span && span.classList.contains('view')) {
+            if (span.querySelector('a')) {
+              span.querySelector('a').href = input.value;
+              span.querySelector('a').innerText = input.value;
+            } else {
+              span.textContent = input.value;
+            }
+          }
+        });
+      }
     });
   </script>
 

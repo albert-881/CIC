@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TrueBooks Partners Client Hub</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link href="dist/styles.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="js/index.js" defer type="module"></script>
   <style>
     body { font-family: 'Poppins', sans-serif; }
 
@@ -51,42 +53,14 @@
         <button id="filterActive" class="bg-[#4a90e2] text-white px-4 py-2 rounded-lg hover:bg-[#357ABD] focus:outline-none">Active</button>
         <button id="filterInactive" class="bg-[#f0f0f0] text-gray-700 px-4 py-2 rounded-lg hover:bg-[#d3d3d3] focus:outline-none">Inactive</button>
         <button id="filterAll" class="bg-[#f0f0f0] text-gray-700 px-4 py-2 rounded-lg hover:bg-[#d3d3d3] focus:outline-none">All</button>
-        <button id="exportCSV" class="text-[#4a90e2] underline text-sm px-2">Export as CSV</button>
+        
       </div>
     </div>
 
     <!-- Customer Cards -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 fade-in-up" id="customerGrid">
 
-      <!-- Example Card 1 -->
-      <a href="customer.html" class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all group relative overflow-hidden" data-status="active" data-name="Carmelita's">
-        <span class="absolute top-4 right-4 h-3 w-3 rounded-full bg-green-500" title="Active"></span>
-        <div class="absolute inset-0 bg-[#4a90e2] opacity-0 group-hover:opacity-10 transition duration-300"></div>
-        <h2 class="text-xl font-semibold text-[#4a90e2] group-hover:underline">Carmelita's</h2>
-        <p class="text-gray-600 mt-1">View contact and documents</p>
-        <p class="text-xs text-gray-400 mt-2">Updated: Apr 5, 2025</p>
-        <button class="text-sm text-[#4a90e2] hover:underline mt-2">+ Note</button>
-      </a>
-
-      <!-- Example Card 2 -->
-      <a href="customer.html" class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all group relative overflow-hidden" data-status="inactive" data-name="HMC">
-        <span class="absolute top-4 right-4 h-3 w-3 rounded-full bg-red-500" title="Inactive"></span>
-        <div class="absolute inset-0 bg-[#4a90e2] opacity-0 group-hover:opacity-10 transition duration-300"></div>
-        <h2 class="text-xl font-semibold text-[#4a90e2] group-hover:underline">HMC</h2>
-        <p class="text-gray-600 mt-1">View contact and documents</p>
-        <p class="text-xs text-gray-400 mt-2">Updated: Mar 30, 2025</p>
-        <button class="text-sm text-[#4a90e2] hover:underline mt-2">+ Note</button>
-      </a>
-
-      <!-- Example Card 3 -->
-      <a href="customer.html" class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all group relative overflow-hidden" data-status="active" data-name="SA Recycling">
-        <span class="absolute top-4 right-4 h-3 w-3 rounded-full bg-green-500" title="Active"></span>
-        <div class="absolute inset-0 bg-[#4a90e2] opacity-0 group-hover:opacity-10 transition duration-300"></div>
-        <h2 class="text-xl font-semibold text-[#4a90e2] group-hover:underline">SA Recycling</h2>
-        <p class="text-gray-600 mt-1">View contact and documents</p>
-        <p class="text-xs text-gray-400 mt-2">Updated: Apr 1, 2025</p>
-        <button class="text-sm text-[#4a90e2] hover:underline mt-2">+ Note</button>
-      </a>
+     
 
     </div>
 
@@ -157,29 +131,7 @@
       updateCustomerCount();
     }
 
-    // CSV Export
-    document.getElementById('exportCSV').addEventListener('click', () => {
-      const cards = customerGrid.querySelectorAll('a');
-      const visibleCards = [...cards].filter(card => card.style.display !== 'none');
-
-      const rows = [['Customer Name', 'Status']];
-      visibleCards.forEach(card => {
-        const name = card.getAttribute('data-name');
-        const status = card.getAttribute('data-status');
-        rows.push([name, status]);
-      });
-
-      const csvContent = rows.map(e => e.join(",")).join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", "customer_list.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-
+    
     // Initial customer count
     updateCustomerCount();
   </script>
