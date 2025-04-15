@@ -31,6 +31,38 @@ export async function putCustomer(name) {
     }
   }
 
+export async function putCompanyProfile(){
+
+}
+
+export async function getCompanyProfile(companyId){
+  const response = await fetch('https://tad764dbo3.execute-api.us-east-2.amazonaws.com/default/CIC-getCompanyProfile', {
+    method: 'POST', 
+    headers: {
+      'Content-Type': 'application/json', // Set content type to JSON
+      // If you need authorization, add an Authorization header
+      // 'Authorization': `Bearer ${authToken}`, // Uncomment if using Cognito or any auth mechanism
+    },
+    body: JSON.stringify({ companyId }), // Send the data as JSON in the request body);
+});
+  try {
+    let data = await response.json();
+    let status = data.exists;
+    console.log(data);
+    if(status == true ){
+      let companyProfile = data.item;
+      return companyProfile;
+    }
+    else{
+      console.log('company profile has not been added yet');
+      return;
+    }
+  } 
+  catch (error) {
+    
+  }
+  }
+
 export async function getCustomers(){
     const response = await fetch('https://wfz9zapms1.execute-api.us-east-2.amazonaws.com/default/CIC-getCustomers')
     try{
