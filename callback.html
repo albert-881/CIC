@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Callback</title>
+  <script>
+    window.onload = function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');  // Get authorization code from URL
+
+      if (code) {
+        // Send the code to Lambda for token exchange and user verification
+        fetch('https://6bvap4xeve.execute-api.us-east-2.amazonaws.com/default/CIC-CognitoAuthExcahnge', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            code: code,  // Only send code, no access_token or id_token
+          }),
+        })
+        .then(response => response.json())
+        .then(data => {
+  console.log('Lambda response:', data);
+  if (data.success) {
+    console.log('User verified successfully');
+    window.location.href = 'index.html';
+  } else {
+    console.log('Verification failed');
+    alert('Verification failed. Please try again.');
+  }
+})
+
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred during verification. Please try again.');
+        });
+      } else {
+        console.log('Authorization code missing');
+        alert('Authorization code missing. Please try logging in again.');
+      }
+    };
+  </script>
+</head>
+<body>
+  <h1>Redirecting...</h1>
+</body>
+</html>

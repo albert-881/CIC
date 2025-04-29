@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     let data = await getCompanyProfile(companyId);
     console.log("the id exists in the table, here’s your data:", data);
 
-    //populateFields(data);
+    populateFields(data);
   }
   
   
@@ -65,7 +65,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (label && view && input) {
           const key = normalizeKey(label.textContent);
-          const value = data[key] || '';
+          const rawValue = data[key];
+          let value = '';
+  
+          if (rawValue) {
+            // handle DynamoDB value format
+            value = rawValue.S || rawValue.N || rawValue.BOOL || '';
+          }
 
           input.value = value;
 

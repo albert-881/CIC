@@ -25,23 +25,55 @@ export async function putCustomer(name) {
       return responseData; // Return response data if needed for further use
   
     } catch (error) {
-      // Catch and handle any errors
+      // Catch and handle any errors   
       console.error('Error adding customer:', error);
       throw error; // Rethrow the error or handle it gracefully in your app
     }
   }
 
-export async function putCompanyProfile(){
+//********************************************************************************************************************/
+//********************************************************************************************************************/
 
-}
+  export async function putCompanyProfile(companyId, updatedData) {
+    try {
+      console.log("Sending update for companyId:", companyId);
+      console.log("Updated data:", updatedData);
+  
+      const response = await fetch(
+        'https://be1wpz0fde.execute-api.us-east-2.amazonaws.com/default/CIC-putCustomerProfile',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ companyId, updatedData }),
+        }
+      );
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        console.error("Server responded with an error:", result);
+        throw new Error(result || "Failed to update company profile.");
+      }
+  
+      console.log("Update successful:", result.message);
+      
+  
+    } catch (error) {
+      console.error("Error during company profile update:", error.message);
+      throw error; // rethrow so calling function can handle it
+    }
+  }
+  
+//********************************************************************************************************************/
+//********************************************************************************************************************/
 
 export async function getCompanyProfile(companyId){
   const response = await fetch('https://tad764dbo3.execute-api.us-east-2.amazonaws.com/default/CIC-getCompanyProfile', {
     method: 'POST', 
     headers: {
-      'Content-Type': 'application/json', // Set content type to JSON
-      // If you need authorization, add an Authorization header
-      // 'Authorization': `Bearer ${authToken}`, // Uncomment if using Cognito or any auth mechanism
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ companyId }), // Send the data as JSON in the request body);
 });
@@ -63,6 +95,9 @@ export async function getCompanyProfile(companyId){
   }
   }
 
+//********************************************************************************************************************/
+//********************************************************************************************************************/
+
 export async function getCustomers(){
     const response = await fetch('https://wfz9zapms1.execute-api.us-east-2.amazonaws.com/default/CIC-getCustomers')
     try{
@@ -83,4 +118,6 @@ export async function getCustomers(){
     }
 }
 
+//********************************************************************************************************************/
+//********************************************************************************************************************/
   
