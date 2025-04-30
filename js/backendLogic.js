@@ -107,27 +107,30 @@ export async function getCompanyProfile(companyId){
 //********************************************************************************************************************/
 //********************************************************************************************************************/
 
-export async function getCustomers() {
+export async function getCustomers(){
   const token = getAccessToken();
-  console.log('Token:', token);
-
-
   const response = await fetch('https://wfz9zapms1.execute-api.us-east-2.amazonaws.com/default/CIC-getCustomers', {
     headers: {
       'Authorization': `Bearer ${token}`,
     }
   });
+    try{
+        // Check if the response is OK
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+  
+      // Parse the JSON response
+      const responseData = await response.json();
 
-  try {
-    
-    if (!response.ok) throw new Error(`Error: ${response.statusText}`);
-    return await response.json();
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
+      return responseData; // Return response data if needed for further use
+  
+    } catch (error) {
+      // Catch and handle any errors
+      console.error('Error:', error);
+      throw error; // Rethrow the error or handle it gracefully in your app
+    }
 }
-
 
 //********************************************************************************************************************/
 //********************************************************************************************************************/
