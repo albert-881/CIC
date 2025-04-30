@@ -16,20 +16,18 @@
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            code: code,  // Only send code, no access_token or id_token
-          }),
+          body: JSON.stringify({ code }),
         })
         .then(response => response.json())
         .then(data => {
           console.log('Lambda response:', data);
           if (data.success) {
             console.log('User verified successfully');
-            // Store the access and id tokens in localStorage
-            localStorage.setItem('access_token', data.access_token);
-            localStorage.setItem('id_token', data.id_token);
-            // Redirect to the home page or another protected page
-            window.location.href = 'index.html';  // Adjust this URL as needed
+            // Store tokens in sessionStorage for temporary, per-tab access
+            sessionStorage.setItem('access_token', data.access_token);
+            sessionStorage.setItem('id_token', data.id_token);
+            // Redirect to protected page
+            window.location.href = 'index.html';  // Change if needed
           } else {
             console.log('Verification failed');
             alert('Verification failed. Please try again.');
