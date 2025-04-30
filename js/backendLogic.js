@@ -119,7 +119,7 @@ export async function getCustomers() {
   });
 
   try {
-    console.log('Response:', response);
+    
     if (!response.ok) throw new Error(`Error: ${response.statusText}`);
     return await response.json();
   } catch (error) {
