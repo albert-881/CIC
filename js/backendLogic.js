@@ -1,13 +1,18 @@
+function getAccessToken() {
+  return sessionStorage.getItem('access_token');
+}
+
+
+
 export async function putCustomer(name) {
-   
+  const token = getAccessToken();
     try {
       // Make the API request to the backend
       const response = await fetch('https://ccnpdlhwnc.execute-api.us-east-2.amazonaws.com/default/CIC-putCustomer', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json', // Set content type to JSON
-          // If you need authorization, add an Authorization header
-          // 'Authorization': `Bearer ${authToken}`, // Uncomment if using Cognito or any auth mechanism
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ name }), // Send the data as JSON in the request body
       });
@@ -35,6 +40,7 @@ export async function putCustomer(name) {
 //********************************************************************************************************************/
 
   export async function putCompanyProfile(companyId, updatedData) {
+    const token = getAccessToken();
     try {
       console.log("Sending update for companyId:", companyId);
       console.log("Updated data:", updatedData);
@@ -45,6 +51,7 @@ export async function putCustomer(name) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({ companyId, updatedData }),
         }
@@ -70,10 +77,12 @@ export async function putCustomer(name) {
 //********************************************************************************************************************/
 
 export async function getCompanyProfile(companyId){
+  const token = getAccessToken();
   const response = await fetch('https://tad764dbo3.execute-api.us-east-2.amazonaws.com/default/CIC-getCompanyProfile', {
     method: 'POST', 
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
     },
     body: JSON.stringify({ companyId }), // Send the data as JSON in the request body);
 });
@@ -98,25 +107,24 @@ export async function getCompanyProfile(companyId){
 //********************************************************************************************************************/
 //********************************************************************************************************************/
 
-export async function getCustomers(){
-    const response = await fetch('https://wfz9zapms1.execute-api.us-east-2.amazonaws.com/default/CIC-getCustomers')
-    try{
-        // Check if the response is OK
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-  
-      // Parse the JSON response
-      const responseData = await response.json();
+export async function getCustomers() {
+  const token = getAccessToken();
 
-      return responseData; // Return response data if needed for further use
-  
-    } catch (error) {
-      // Catch and handle any errors
-      console.error('Error:', error);
-      throw error; // Rethrow the error or handle it gracefully in your app
+  const response = await fetch('https://wfz9zapms1.execute-api.us-east-2.amazonaws.com/default/CIC-getCustomers', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
     }
+  });
+
+  try {
+    if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
 }
+
 
 //********************************************************************************************************************/
 //********************************************************************************************************************/
