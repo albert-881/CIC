@@ -108,7 +108,7 @@ export async function getCompanyProfile(companyId){
 //********************************************************************************************************************/
 
 export async function getCustomers() {
-  const token = 1111;
+  const token = getAccessToken();
 
   const response = await fetch('https://wfz9zapms1.execute-api.us-east-2.amazonaws.com/default/CIC-getCustomers', {
     headers: {
