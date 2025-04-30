@@ -123,7 +123,7 @@ export async function getCustomers(){
       // Parse the JSON response
       const responseData = await response.json();
       console.log(responseData);
-      return responseData.companies; // Return response data if needed for further use
+      return responseData; // Return response data if needed for further use
   
     } catch (error) {
       // Catch and handle any errors
