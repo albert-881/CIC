@@ -109,6 +109,8 @@ export async function getCompanyProfile(companyId){
 
 export async function getCustomers() {
   const token = getAccessToken();
+  console.log('Token:', token);
+
 
   const response = await fetch('https://wfz9zapms1.execute-api.us-east-2.amazonaws.com/default/CIC-getCustomers', {
     headers: {
@@ -117,6 +119,7 @@ export async function getCustomers() {
   });
 
   try {
+    console.log('Response:', response);
     if (!response.ok) throw new Error(`Error: ${response.statusText}`);
     return await response.json();
   } catch (error) {
