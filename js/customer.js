@@ -3,20 +3,20 @@ import { getCompanyProfile } from "./backendLogic.js";
 
 const params = new URLSearchParams(window.location.search);
 const companyId = params.get("id");
-console.log("Company ID from URL:", companyId);
 
+const isValidCompanyId = /^[a-zA-Z0-9_-]{5,50}$/.test(companyId);
 
 document.addEventListener('DOMContentLoaded', async function () {
   const toggleEditBtn = document.getElementById('toggleEdit');
   let isEditMode = false;
 
-  toggleEditBtn.addEventListener('click', () => {
+  toggleEditBtn.addEventListener('click', async () => {
     isEditMode = !isEditMode;
     toggleViewMode(isEditMode);
     toggleEditBtn.innerText = isEditMode ? 'Save Changes' : 'Edit Mode';
 
     if (!isEditMode) {
-      saveChanges();
+      await saveChanges();
     }
   });
 
@@ -29,16 +29,20 @@ document.addEventListener('DOMContentLoaded', async function () {
       : 'Show Debit Card Info';
   });
 
-  
-  if (companyId) {
-    
-    let data = await getCompanyProfile(companyId);
-    console.log("the id exists in the table, here’s your data:", data);
-
-    populateFields(data);
+  if (companyId && isValidCompanyId) {
+    try {
+      const data = await getCompanyProfile(companyId);
+      if (data) {
+        populateFields(data);
+      } else {
+        alert("Company profile not found.");
+      }
+    } catch (error) {
+      alert("Error loading company profile.");
+    }
+  } else {
+    alert("Invalid or missing company ID.");
   }
-  
-  
 
   function toggleViewMode(isEdit) {
     document.querySelectorAll('.view').forEach(el =>
@@ -67,9 +71,8 @@ document.addEventListener('DOMContentLoaded', async function () {
           const key = normalizeKey(label.textContent);
           const rawValue = data[key];
           let value = '';
-  
+
           if (rawValue) {
-            // handle DynamoDB value format
             value = rawValue.S || rawValue.N || rawValue.BOOL || '';
           }
 
@@ -86,23 +89,24 @@ document.addEventListener('DOMContentLoaded', async function () {
       });
     });
   }
-  function saveChanges() {
+
+  async function saveChanges() {
     const updatedData = {};
-  
+
     document.querySelectorAll('section').forEach(section => {
       const rows = section.querySelectorAll('p');
-  
+
       rows.forEach(row => {
         const view = row.querySelector('span.view');
         const input = row.querySelector('input.edit');
         const label = row.querySelector('strong');
-  
+
         if (view && input && label) {
           const key = normalizeKey(label.textContent);
-          const value = input.value;
-  
+          const value = input.value.trim();
+
           updatedData[key] = value;
-  
+
           const link = view.querySelector('a');
           if (link) {
             link.href = value;
@@ -113,11 +117,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
       });
     });
-  
-    console.log('Updated data:', updatedData);
-    putCompanyProfile(companyId, updatedData);
+
+    try {
+      await putCompanyProfile(companyId, updatedData);
+      alert("Changes saved successfully.");
+    } catch (error) {
+      alert("Failed to save changes.");
+    }
   }
-  
 });
-
-
