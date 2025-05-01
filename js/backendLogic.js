@@ -38,10 +38,7 @@ export async function putCustomer(name) {
 export async function putCompanyProfile(companyId, updatedData) {
   const token = getAccessToken();
   try {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log("Sending update for companyId:", companyId);
-      console.log("Updated data:", updatedData);
-    }
+    
 
     const response = await fetch(
       'https://be1wpz0fde.execute-api.us-east-2.amazonaws.com/default/CIC-putCustomerProfile',
