@@ -4,7 +4,8 @@ import { getCompanyProfile } from "./backendLogic.js";
 const params = new URLSearchParams(window.location.search);
 const companyId = params.get("id");
 
-const isValidCompanyId = /^[a-zA-Z0-9_-]{5,50}$/.test(companyId);
+const isValidCompanyId = /^[a-zA-Z0-9_-]{1,50}$/.test(companyId);
+
 
 document.addEventListener('DOMContentLoaded', async function () {
   const toggleEditBtn = document.getElementById('toggleEdit');
