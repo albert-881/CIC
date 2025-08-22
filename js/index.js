@@ -1,16 +1,40 @@
 import { getCustomers } from "./backendLogic.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const companies = await getCustomers();
-  console.log(companies);
-
   const container = document.getElementById("customerGrid");
 
-  companies.forEach(company => {
-    const card = createCompanyCard(company);
-    container.appendChild(card);
-  });
+  // Helper to render cards
+  function renderCompanies(companies) {
+    container.innerHTML = ""; // clear old
+    companies.forEach(company => {
+      const card = createCompanyCard(company);
+      container.appendChild(card);
+    });
+  }
+
+  // 1. Load from localStorage first (if exists)
+  const cached = localStorage.getItem("companies");
+  if (cached) {
+    try {
+      const companies = JSON.parse(cached);
+      renderCompanies(companies);
+      console.log("Loaded companies from localStorage");
+    } catch (err) {
+      console.error("Error parsing cached companies:", err);
+    }
+  }
+
+  // 2. Always fetch fresh data in background
+  try {
+    const companies = await getCustomers();
+    renderCompanies(companies);
+    localStorage.setItem("companies", JSON.stringify(companies));
+    console.log("Updated companies from API");
+  } catch (err) {
+    console.error("Error fetching companies:", err);
+  }
 });
+
 
 function createCompanyCard(company) {
   const a = document.createElement("a");
