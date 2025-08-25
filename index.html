@@ -77,64 +77,7 @@
     <a href="addCustomer.html" class="bg-[#4a90e2] text-white px-4 py-2 rounded-xl text-sm">+ Add Customer</a>
   </div>
 
-  <script>
-    const searchInput = document.getElementById('searchInput');
-    const customerGrid = document.getElementById('customerGrid');
-    const noResults = document.getElementById('noResults');
-    const customerCount = document.getElementById('customerCount');
 
-    function updateCustomerCount() {
-      const visibleCards = [...customerGrid.querySelectorAll('a')].filter(card => card.style.display !== 'none');
-      customerCount.textContent = `Showing ${visibleCards.length} customer${visibleCards.length !== 1 ? 's' : ''}`;
-    }
-
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase();
-      const cards = customerGrid.querySelectorAll('a');
-      let anyVisible = false;
-
-      cards.forEach(card => {
-        const text = card.getAttribute('data-name').toLowerCase();
-        const visible = text.includes(query);
-        card.style.display = visible ? 'block' : 'none';
-        if (visible) anyVisible = true;
-      });
-
-      noResults.style.display = anyVisible ? 'none' : 'block';
-      updateCustomerCount();
-    });
-
-    // Filter buttons
-    const filterActive = document.getElementById('filterActive');
-    const filterInactive = document.getElementById('filterInactive');
-    const filterAll = document.getElementById('filterAll');
-
-    filterActive.addEventListener('click', () => filterCards('active'));
-    filterInactive.addEventListener('click', () => filterCards('inactive'));
-    filterAll.addEventListener('click', () => filterCards('all'));
-
-    function filterCards(status) {
-      const cards = customerGrid.querySelectorAll('a');
-      let anyVisible = false;
-
-      cards.forEach(card => {
-        if (status === 'all') {
-          card.style.display = 'block';
-        } else {
-          const isVisible = card.getAttribute('data-status') === status;
-          card.style.display = isVisible ? 'block' : 'none';
-        }
-        if (card.style.display === 'block') anyVisible = true;
-      });
-
-      noResults.style.display = anyVisible ? 'none' : 'block';
-      updateCustomerCount();
-    }
-
-    
-    // Initial customer count
-    updateCustomerCount();
-  </script>
 
 </body>
 </html>
